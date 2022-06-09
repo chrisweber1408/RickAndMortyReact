@@ -1,0 +1,9 @@
+.gallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.status{
+    margin: 10px;
+}
