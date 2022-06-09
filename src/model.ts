@@ -1,4 +1,6 @@
-import { ExitStatus } from "typescript";
+export interface PageData{
+    results: Array<Character>
+}
 
 export interface Character {
     name: string;
