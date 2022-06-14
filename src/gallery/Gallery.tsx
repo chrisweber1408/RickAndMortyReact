@@ -3,6 +3,7 @@ import GalleryItem from './GalleryItem';
 import './Gallery.css';
 import {useEffect, useState} from "react";
 import {Character, PageData} from "../model";
+import axios from "axios";
 
 export default function Gallery() {
 
@@ -11,19 +12,41 @@ export default function Gallery() {
     const [page, setPage] = useState(1)
     const [characters, setCharacters] = useState<Array<Character>>([])
 
+    const [errorMassage, setErrorMassage] = useState("")
+
+
     useEffect(() => {
-        fetch("https://rickandmortyapi.com/api/character/?page=" + page)
-            .then(response => response.json())
+        axios.get("https://rickandmortyapi.com/api/character")
+            .then(response => response.data)
             .then((page: PageData) => setCharacters(page.results))
+            .catch(e => setErrorMassage("Die Charaktere wurden nicht gefunden!"))
     }, [])
 
+    useEffect(()=>{
+        setTimeout(() => setErrorMassage(""),5000)
+    },[errorMassage])
+/*
+    useEffect(() => {
+        fetch("https://rickandmortyapi.com/api/characte")
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                throw new Error();
+            })
+            .then((page: PageData) => setCharacters(page.results))
+            .catch(e => setErrorMassage("Error"))
+    }, [])
+ */
+
     const components = characters
-        .filter(c => c.name.toLowerCase().includes(searchname.toLowerCase()) && c.status.toLowerCase().includes(searchstatus.toLowerCase()))
+        .filter(c => c.name.toLowerCase().includes(searchname.toLowerCase())
+             && c.status.toLowerCase().includes(searchstatus.toLowerCase()))
         .map(c => <GalleryItem character={{name: c.name, image: c.image, status: c.status, species: c.species, gender: c.gender}} />)
 
     return (
         <div>
-            <button className="buttons" onClick={event => setPage( + 1)}>Prev Page</button>
+            {errorMassage && <div>{errorMassage}</div>}
             <label htmlFor="searchname">Search Name</label> <input id="searchname" type="text" value={searchname} onChange={event => setSearchname(event.target.value)} />
             <select className="status" id="Status" onChange={event =>setStatus(event.target.value)}>
                 <option selected value="">All</option>
@@ -31,7 +54,6 @@ export default function Gallery() {
                 <option value="dead">Dead</option>
                 <option value="unknown">Unknown</option>
             </select>
-            <button className="buttons" onClick={event => setPage( - 1)}>Next Page</button>
             <br/>
             <br/>
             <div className="gallery">

@@ -12,16 +12,16 @@ export default function GalleryItem(props: GalleryItemProps) {
                 <img src={props.character.image} />
             </div>
             <div className="character-information">
-                <div>
+                <div data-TestId={"name-div"} >
                     <span className="label">Name:</span> {props.character.name}
                 </div>
-                <div>
+                <div data-TestId={"status-div"} >
                     <span className="label">Status:</span> {props.character.status}
                 </div>
-                <div>
+                <div data-TestId={"species-div"} >
                     <span className="label">Species:</span> {props.character.species}
                 </div>
-                <div>
+                <div data-TestId={"gender-div"} >
                     <span className="label">Gender:</span> {props.character.gender}
                 </div>
             </div>
